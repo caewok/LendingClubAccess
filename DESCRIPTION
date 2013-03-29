@@ -1,0 +1,9 @@
+Package: LendingClubAccess
+Type: Package
+Title: Functions to access and download notes data from the Lending Club website. 
+Version: 1.0
+Date: 2013-03-29
+Author: M. Rhead Enion
+Maintainer: Rhead Enion <caewok_2000@yahoo.com>
+Description: Functions to access and download notes data from the Lending Club website. Can download all notes or notes data from a user account.
+License: GPL-2
