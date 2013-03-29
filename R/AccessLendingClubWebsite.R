@@ -6,6 +6,7 @@
 
 # GLOBAL VARIABLES: PREDEFINED
 # should ask before defining each of these
+SetLCOptions <- function() {
 if(is.null(getOption("LC_DL_FOLDER"))) {
 	dl_folder <- paste0(getwd(), "/LendingClubDownloads/")
 	if(!file.exists(dl_folder)) dir.create(dl_folder)
@@ -22,12 +23,14 @@ if(is.null(getOption("LC_LOGIN_ACTION"))) options(LC_LOGIN_ACTION = "https://www
 if(is.null(getOption("LC_NOTES_ACTION"))) options(LC_NOTES_ACTION = "https://www.lendingclub.com/account/notesRawData.action")
 if(is.null(getOption("LC_BROWSE_ACTION"))) options(LC_BROWSE_ACTION = "https://www.lendingclub.com/browse/browseNotesRawDataV3.action")
 
+}
 # Function: DownloadLCLoanStats
 # --------
 # Uses curl to download the loan statistics file from Lending Club webpage
 # Does not require a login
 # the '...' passes commands to system2
 DownloadLCLoanStats <- function(split=TRUE, compress=TRUE, ...) {
+     if(is.null(getOption("LC_DL_FOLDER"))) SetLCOptions()
      
      # remove the old file?
      
@@ -50,6 +53,8 @@ DownloadLCLoanStats <- function(split=TRUE, compress=TRUE, ...) {
 # WARNING: user name and password will be in R's memory in plaintext for a limited period
 # After calling this function, a cookie (cjar) will be saved to the working directory, to allow additional calls to curl using the login information
 LogIntoLC <- function(username, password) { 
+     if(is.null(getOption("LC_LOGIN_PAGE"))) SetLCOptions()
+     
      if(missing(username) | missing(password)) {
           #if(!("LendingClubLoginInfo.Rdata.gpg" %in% list.files())) source("EncryptLendingClubUserAndPassword.R")    
           #source("DecryptLendingClubUserAndPassword.R")          
@@ -82,7 +87,9 @@ LogIntoLC <- function(username, password) {
 # --------
 # Must first call LogIntoLC()
 # Download owned notes CSV file for the account
-DownloadLCAccountNotes <- function() {     
+DownloadLCAccountNotes <- function() {   
+     if(is.null(getOption("LC_DL_FOLDER"))) SetLCOptions()
+     
      do.logout <- FALSE
      dl_folder <- getOption("LC_DL_FOLDER")
      notes_filename <- getOption("LC_OWNEDNOTES_FILENAME")
@@ -110,7 +117,9 @@ DownloadLCAccountNotes <- function() {
 # Must first call LogIntoLC()
 # Download offered notes CSV file for the account
 DownloadLCOfferedNotes <- function() {
-	 do.logout <- FALSE
+     if(is.null(getOption("LC_DL_FOLDER"))) SetLCOptions()
+     
+     do.logout <- FALSE
 	  dl_folder <- getOption("LC_DL_FOLDER")
      notes_filename <- getOption("LC_BROWSENOTES_FILENAME")
        

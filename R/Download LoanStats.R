@@ -8,7 +8,9 @@
 # if(is.null(getOption("DL_FOLDER"))) setOption("DL_FOLDER", paste(getwd(), "/LendingClubDownloads/", sep=""))
 # should already be set by AccessLendingClubWebsite.R
 SplitLCLoanStats <- function() {
-	# Shift working directory to the download folder for the CSV file
+     if(is.null(getOption("LC_DL_FOLDER"))) SetLCOptions()
+     
+     # Shift working directory to the download folder for the CSV file
 	WD.ORIG <- getwd()
 	setwd(getOption("LC_DL_FOLDER"))
 	
@@ -51,7 +53,9 @@ setwd(WD.ORIG)
 
 
 CompressLCLoanStats <- function() {
-	WD.ORIG <- getwd()
+     if(is.null(getOption("LC_DL_FOLDER"))) SetLCOptions()
+     
+     WD.ORIG <- getwd()
 	setwd(getOption("LC_DL_FOLDER"))
 
 	# GZIP
