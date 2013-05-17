@@ -27,6 +27,8 @@ if(is.null(getOption("LC_NOTES_ACTION"))) options(LC_NOTES_ACTION = "https://www
 
 if(is.null(getOption("LC_BROWSE_ACTION"))) options(LC_BROWSE_ACTION = "https://www.lendingclub.com/browse/browseNotesRawDataV3.action")
 if(is.null(getOption("LC_BROWSE_NEW_ACTION"))) options(LC_BROWSE_NEW_ACTION = "https://www.lendingclub.com/fileDownload.action?file=InFunding2StatsNew.csv&type=gen")
+
+     options(LC_NEW_LOANS = "LoanStats_New", LC_OLD_LOANS = "LoanStats_Old")
 }
 # Function: DownloadLCLoanStats
 # --------
@@ -42,7 +44,7 @@ DownloadLCLoanStats <- function(split=TRUE, compress=TRUE, type="old", ...) {
      # remove the old file?
      
      # Use curl to retrieve file
-     system2(command = "curl", args=c(paste("--url", shQuote(getOption(lc_action))), 
+     system2(command = "curl", args=c(paste("--url", shQuote(lc_action)), 
                                       paste("--output", paste(getOption("LC_DL_FOLDER"), getOption("LC_LOANSTATS_FILENAME"), sep=""))),
                             	...) 
      
@@ -141,7 +143,7 @@ DownloadLCOfferedNotes <- function(type="old") {
      	LogIntoLC()
      	}
      
-     system(paste('curl -b cjar "', getOption(lc_action), '" > ', dl_folder, notes_filename, sep=""))
+     system(paste('curl -b cjar "', lc_action, '" > ', dl_folder, notes_filename, sep=""))
       if(do.logout) LogOutLC()
       
      # the CSV has a flaw: it includes a comma at the end of each line, while R expects no comma
